@@ -2,7 +2,7 @@ import {crearElemento, crearAplicacion, crearAlmacen} from "./tu-red.js";
 
 import { Formulario } from "./Formulario.jsx";
 
-
+//store
 const almacen = crearAlmacen({
     nombre: "",
     email: "",
@@ -15,7 +15,7 @@ const almacen = crearAlmacen({
     }
 });
 
-
+//reducer:modifica el estado con una accion
 function reductor(estado, accion) {
 
     if (accion.tipo === "CAMBIAR_NOMBRE") {
@@ -54,15 +54,12 @@ function reductor(estado, accion) {
     return estado;
 }
 
-
+//Aquí conectas Formulario con el Store.
 function App(estado) {
 
     return (
-        <Formulario
-            estado={estado}
-            enviarAccion={(accion) =>
-                almacen.enviarAccion(accion, reductor)
-            }
+        <Formulario estado={estado} enviarAccion={(accion) => 
+            almacen.enviarAccion(accion, reductor)}
         />
     );
 }

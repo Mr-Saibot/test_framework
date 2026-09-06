@@ -1,68 +1,71 @@
 import { crearElemento } from "./tu-red.js";
 
-export function Formulario({ estado, enviarAccion }) {
 
-    function cambiarNombre(evento) {
-        enviarAccion({
-            tipo: "CAMBIAR_NOMBRE",
-            valor: evento.target.value
-        });
-    }
-
-    function cambiarEmail(evento) {//evento
-        enviarAccion({
-            tipo: "CAMBIAR_EMAIL",//tipo de evento
-            valor: evento.target.value//valor del evento
-        });
-    }
-
-    function cambiarMensaje(evento) {
-        enviarAccion({
-            tipo: "CAMBIAR_MENSAJE",
-            valor: evento.target.value
-        });
-    }
-
-    function enviarFormulario(evento) {
-
-        evento.preventDefault();//previene recarga
-
-        enviarAccion({
-            tipo: "ENVIAR"
-        });
-    }
-
+function EncabezadoFormulario() {
     return (
-        <main>
+        <h1>
+            Formulario con TU-RED
+        </h1>
+    );
+}
 
-            <h1>
-                Formulario con TU-RED
-            </h1>
 
-            <form onsubmit={enviarFormulario}>
+function CampoNombre({ valor, cambiar }) {
+    return (
+        <div>
+            <p>Nombre</p>
 
-                <p>Nombre</p>
+            <input
+                type="text"
+                value={valor}
+                oninput={cambiar}
+            />
+        </div>
+    );
+}
 
-                <input type="text" value={estado.nombre} oninput={cambiarNombre}
-/>
 
-                <p>Email</p>
+function CampoEmail({ valor, cambiar }) {
+    return (
+        <div>
+            <p>Email</p>
 
-                <input type="email" value={estado.email} oninput={cambiarEmail}
-/>
+            <input
+                type="email"
+                value={valor}
+                oninput={cambiar}
+            />
+        </div>
+    );
+}
 
-                <p>Mensaje</p>
 
-                <textarea value={estado.mensaje} oninput={cambiarMensaje} ></textarea>
+function CampoMensaje({ valor, cambiar }) {
+    return (
+        <div>
+            <p>Mensaje</p>
 
-                <br />
+            <textarea
+                value={valor}
+                oninput={cambiar}
+            ></textarea>
+        </div>
+    );
+}
 
-                <button type="submit">
-                    Enviar
-                </button>
 
-            </form>
+function BotonEnviar() {
+    return (
+        <button type="submit">
+            Enviar
+        </button>
+    );
+}
 
+
+function EstadoActual({ estado }) {
+    return (
+        <div>
             <hr />
 
             <h2>
@@ -80,30 +83,105 @@ export function Formulario({ estado, enviarAccion }) {
             <p>
                 Mensaje: {estado.mensaje}
             </p>
+        </div>
+    );
+}
+
+
+function FormularioEnviado({ estado }) {
+    return (
+        <section>
+
+            <h2>
+                Formulario enviado
+            </h2>
+
+            <p>
+                Nombre: {estado.resultado.nombre}
+            </p>
+
+            <p>
+                Email: {estado.resultado.email}
+            </p>
+
+            <p>
+                Mensaje: {estado.resultado.mensaje}
+            </p>
+
+        </section>
+    );
+}
+
+
+export function Formulario({ estado, enviarAccion }) {
+
+    function cambiarNombre(evento) {
+        enviarAccion({
+            tipo: "CAMBIAR_NOMBRE",
+            valor: evento.target.value
+        });
+    }
+
+
+    function cambiarEmail(evento) {
+        enviarAccion({
+            tipo: "CAMBIAR_EMAIL",
+            valor: evento.target.value
+        });
+    }
+
+
+    function cambiarMensaje(evento) {
+        enviarAccion({
+            tipo: "CAMBIAR_MENSAJE",
+            valor: evento.target.value
+        });
+    }
+
+
+    function enviarFormulario(evento) {
+
+        evento.preventDefault();
+
+        enviarAccion({
+            tipo: "ENVIAR"
+        });
+    }
+
+
+    return (
+        <main>
+
+            <EncabezadoFormulario />
+
+            <form onsubmit={enviarFormulario}>
+
+                <CampoNombre
+                    valor={estado.nombre}
+                    cambiar={cambiarNombre}
+                />
+
+                <CampoEmail
+                    valor={estado.email}
+                    cambiar={cambiarEmail}
+                />
+
+                <CampoMensaje
+                    valor={estado.mensaje}
+                    cambiar={cambiarMensaje}
+                />
+
+                <br />
+
+                <BotonEnviar />
+
+            </form>
+
+            <EstadoActual estado={estado} />
 
             {estado.enviado && (
-
-    <section>
-
-        <h2>
-            Formulario enviado
-        </h2>
-
-        <p>
-            Nombre: {estado.resultado.nombre}
-        </p>
-
-        <p>
-            Email: {estado.resultado.email}
-        </p>
-
-        <p>
-            Mensaje: {estado.resultado.mensaje}
-        </p>
-
-    </section>
-
-)}
+                <FormularioEnviado estado={estado} />
+            )}
 
         </main>
     );

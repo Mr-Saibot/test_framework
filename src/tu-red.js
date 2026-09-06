@@ -26,7 +26,7 @@ function resolverComponente(elemento) {
 
 function actualizarPropiedades(nodo, anteriores = {}, nuevas = {}) {
     for (const nombre in anteriores) {//recorremos las propiedades antiguas
-        if (!(nombre in nuevas)) {//¿Esta propiedad existía antes pero ya no existe?
+        if (!(nombre in nuevas)) {
             if (nombre.startsWith("on")) {//detecta si hay algun evento y quita el 'on'
                 const evento = nombre.slice(2).toLowerCase();
 
@@ -138,9 +138,8 @@ function actualizarNodo(contenedor, anterior, nuevo, indice = 0) {
         }
         return;
     }
-
-    actualizarPropiedades(//actualizamos las propiedades
-        nodoActual, anterior.propiedades, nuevo.propiedades);
+    //actualizamos las propiedades
+    actualizarPropiedades(nodoActual, anterior.propiedades, nuevo.propiedades);
 
     const hijosAnteriores = anterior.hijos || [];//obtenemos el contenido de cada elemento
     const hijosNuevos = nuevo.hijos || [];
@@ -162,7 +161,6 @@ function renderizar(elemento, contenedor) {
 }
 
 // FLUX: Acción → Reducer → Estado → Renderizado
-
 function crearAlmacen(estadoInicial) {
     let estado = estadoInicial;
     const suscriptores = [];// guardamos las funciones que deben avisarse cuando cambia el estado
@@ -175,6 +173,7 @@ function crearAlmacen(estadoInicial) {
         suscriptores.push(funcion);
     }
 
+    //'dispacher'
     function enviarAccion(accion, reductor) {
         estado = reductor(estado, accion);// enviamos una acción al reducer para obtener el nuevo estado
 
@@ -195,7 +194,7 @@ function crearAplicacion(componente, contenedor, almacen) {// recibe el componen
         renderizar(componente(estado), contenedor);// ejecutamos el componente con el estado actual y renderizamos su resultado
     }
 
-    if (almacen) {// si existe un almacén, nos suscribimos a sus cambios
+    if (almacen) {// si hay cambios en el store los actualizamos
         almacen.suscribirse(nuevoEstado => { // recibimos el nuevo estado
             estado = nuevoEstado;
             actualizar();// volvemos a renderizar la aplicación
