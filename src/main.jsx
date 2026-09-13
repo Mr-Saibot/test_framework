@@ -8,11 +8,7 @@ const almacen = crearAlmacen({
     email: "",
     mensaje: "",
     enviado: false,
-    resultado: {
-        nombre: "",
-        email: "",
-        mensaje: ""
-    }
+    resultado: []
 });
 
 //reducer:modifica el estado con una accion
@@ -40,14 +36,16 @@ function reductor(estado, accion) {
         nombre: "",
         email: "",
         mensaje: "",
-
         enviado: true,
-
-        resultado: {
-            nombre: estado.nombre,
-            email: estado.email,
-            mensaje: estado.mensaje
-        }
+        // Conserva el historial y añade el formulario actual
+        resultado: [
+            ...estado.resultado,
+            {
+                nombre: estado.nombre,
+                email: estado.email,
+                mensaje: estado.mensaje
+            }
+        ]
     };
 }
 
